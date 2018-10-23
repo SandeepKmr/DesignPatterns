@@ -6,6 +6,7 @@ public class Singleton implements Cloneable {
 
 	private Singleton() {
 
+		// Reflection
 		if (singletonObject != null) {
 			throw new RuntimeException("Not Allowed !!");
 		}
@@ -13,6 +14,9 @@ public class Singleton implements Cloneable {
 	}
 
 	public static Singleton getInstance() {
+
+		// Double check locking for protecting it from multithreds and half
+		// baked objects .
 
 		if (singletonObject == null) {
 			synchronized (Singleton.class) {
