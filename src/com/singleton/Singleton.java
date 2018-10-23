@@ -1,25 +1,14 @@
 package com.singleton;
 
-import java.lang.reflect.ReflectPermission;
-import java.security.Permission;
-
-public class Singleton {
+public class Singleton implements Cloneable {
 
 	private static Singleton singletonObject = null;
 
 	private Singleton() {
 
-		System.setSecurityManager(new SecurityManager() {
-			@Override
-			public void checkPermission(Permission perm) {
-				if (perm.getClass() == ReflectPermission.class && "suppressAccessChecks".equals(perm.getName())) {
-					throw new SecurityException("can't supress AccessChecks");
-				}
-			}
-		});
-		/*if (singletonObject != null) {
+		if (singletonObject != null) {
 			throw new RuntimeException("Not Allowed !!");
-		}*/
+		}
 
 	}
 
@@ -36,6 +25,20 @@ public class Singleton {
 			}
 		}
 
+		return singletonObject;
+
+	}
+
+	// For Serialization
+
+	protected Object readResolve() {
+		return getInstance();
+	}
+
+	// for cloning
+
+	@Override
+	public Singleton clone() throws CloneNotSupportedException {
 		return singletonObject;
 
 	}
